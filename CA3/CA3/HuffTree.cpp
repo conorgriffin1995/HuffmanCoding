@@ -141,53 +141,59 @@ void HuffTree::Decode(HuffNode *root, ifstream &inFile, ofstream &fileDec) {
 
 // Part 6
 /***************************************************************************************
-*    Title: <Convert a string of binary into an ASCII string (C++)>
+*    Title: <Simple text-to-binary converter written in C++>
 *    Author: <Dale Wilson>
 *    Date: <Apr 28 '14 at 15:19>
 *    Code version: <C++11:>
 *    Availability: <https://stackoverflow.com/questions/23344257/convert-a-string-of-binary-into-an-ascii-string-c>
 *
 ***************************************************************************************/
+
 void HuffTree::Compress() {
 	ifstream inFile("encoded.txt");
-	ofstream compFile("compress.txt");
-	bitset<8> bits;
-	char c;
-	while (inFile.get(c)) {
-		if (bits.size() == 8) {
-			char d = char(bits.to_ulong());
-			compFile << d;
-		}
+	ofstream compFile("compressed.txt");
+
+	while (inFile.good()) {
+		bitset<8> bits;
 		inFile >> bits;
-		// if at the end of file
-		if (inFile.eof()) {
-			int bitSize = sizeof(bits);		// get remaining bits
-		}
+		char c = char(bits.to_ulong());
+		compFile << c;
 	}
+
+	compFile << 'š'; // end of file marker
+
 	inFile.close();
 	compFile.close();
 }
 
-//void HuffTree::Compress() {
-//	ifstream inFile("encoded.txt");
-//	ofstream compFile("compress.txt");
-//
-//	while (inFile.good()) {
-//		bitset<8> bits;
-//		inFile >> bits;
-//		char c = char(bits.to_ulong());
-//		compFile << c;
-//	}
-//
-//	inFile.close();
-//	compFile.close();
-//}
-
 // Part 7
+/***************************************************************************************
+*    Title: <Convert a string of binary into an ASCII string (C++)>
+*    Author: <Jamal>
+*    Date: <Feb 5 '14 at 5:56>
+*    Code version: <NA>
+*    Availability: <https://codereview.stackexchange.com/questions/2661/simple-text-to-binary-converter-written-in-c>
+*
+***************************************************************************************/
 void HuffTree::Decompress() {
-	ifstream inFile("compress.txt");
-	ofstream compFile("decompress.txt");
+	ifstream inFile("compressed.txt");
+	ofstream compFile("decompressed.txt");
+	char c;
+	while (inFile.get(c)) {
+		bitset<8> binary(c);
+		compFile << binary;
+	}
 
+	inFile.close();
+	compFile.close();
+
+	ifstream decFile("decompressed.txt");
+	ofstream file("decompressedText.txt");
+
+	Decode(root, decFile, file);
+
+	decFile.close();
+	file.close();
 
 
 }

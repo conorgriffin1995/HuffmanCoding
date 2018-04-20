@@ -22,7 +22,7 @@ int main() {
 	tree.buildTree(frequency);				// 2, 3
 	tree.Decode();							// 5				
 	tree.Compress();						// 6
-
+	tree.Decompress();
 	inFile.close();
 
 	system("pause");
